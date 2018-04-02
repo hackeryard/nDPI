@@ -1,21 +1,24 @@
-# ÔÚ10.10.7.237(Centos 7)ÉÏµÄ°²×°¹ý³Ì£º
+# åœ¨10.10.7.237(Centos 7)ä¸Šçš„å®‰è£…è¿‡ç¨‹ï¼š
 
-## °²×°±àÒë¹¤¾ß
+## å®‰è£…ç¼–è¯‘å·¥å…·
 - yum groupinstall "Development tools"
 - yum install git autoconf automake autogen libpcap-devel libtool
 
-## ÏÂÔØÔ´Âë
+## ä¸‹è½½æºç 
 - git clone https://github.com/ntop/nDPI.git
 
-## ±àÒë
+## ç¼–è¯‘
 - ./autogen.sh
 - ./configure
 - make && make install
 
-## ²âÊÔ
-### ÔÚem1½Ó¿Ú¼àÌý30s
+## æµ‹è¯•
+### åœ¨em1æŽ¥å£ç›‘å¬30s
 - ndpiReader -i em1 -s 30
 
-### Ìí¼Ó¼òµ¥µÄÐ­ÒéÊ¶±ð
+### æ·»åŠ ç®€å•çš„åè®®è¯†åˆ«
 - echo 'host:"ntop.org"@nTop'> protos.txt
 - ndpiReader -i em1 -p protos.txt -s 30
+
+## ç»´æŠ¤
+æœ¬æ¬¡å®‰è£…åœ¨/root/ndpi/nDPI
