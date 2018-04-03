@@ -22,9 +22,11 @@
 #define _GNU_SOURCE
 #include <sched.h>
 #endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+
 #ifdef WIN32
 #include <winsock2.h> /* winsock.h is included automatically */
 #include <process.h>
@@ -34,6 +36,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #endif
+
 #include <string.h>
 #include <stdarg.h>
 #include <search.h>
@@ -87,6 +90,7 @@ static u_int32_t pcap_analysis_duration = (u_int32_t)-1;
 static u_int16_t decode_tunnels = 0;
 static u_int16_t num_loops = 1;
 static u_int8_t shutdown_app = 0, quiet_mode = 0;
+//using one thread in ndpiReader
 static u_int8_t num_threads = 1;
 static struct timeval begin, end;
 #ifdef linux
