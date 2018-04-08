@@ -22,3 +22,7 @@
 
 ## 维护
 本次安装在/root/ndpi/nDPI
+
+## Misc
+- 添加json-c支持 即最后打印的统计结果输出到json文件 
+  - yum install json-c json-c-devel
