@@ -1824,6 +1824,8 @@ void printPortStats(struct port_stats *stats) {
   }
 }
 
+//add traffic duration
+float global_traffic_duration;
 
 /* *********************************************** */
 
@@ -1831,10 +1833,7 @@ void printPortStats(struct port_stats *stats) {
  * @brief Print result
  */
 static void printResults(u_int64_t tot_usec) {
-
-  //add traffic duration
-  float global_traffic_duration;
-
+  
   u_int32_t i;
   u_int64_t total_flow_bytes = 0;
   u_int32_t avg_pkt_size = 0;
