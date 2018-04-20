@@ -1831,6 +1831,10 @@ void printPortStats(struct port_stats *stats) {
  * @brief Print result
  */
 static void printResults(u_int64_t tot_usec) {
+
+  //add traffic duration
+  float global_traffic_duration;
+
   u_int32_t i;
   u_int64_t total_flow_bytes = 0;
   u_int32_t avg_pkt_size = 0;
@@ -1937,6 +1941,7 @@ static void printResults(u_int64_t tot_usec) {
 	strftime(when, sizeof(when), "%d/%b/%Y %H:%M:%S", localtime(&pcap_end.tv_sec));
 	printf("\tAnalysis end:          %s\n", when);
 	printf("\tTraffic throughput:    %s pps / %s/sec\n", formatPackets(t, buf), formatTraffic(b, 1, buf1));
+  global_traffic_duration = traffic_duration / 1000000;
 	printf("\tTraffic duration:      %.3f sec\n", traffic_duration/1000000);
       }
 
@@ -1954,6 +1959,9 @@ static void printResults(u_int64_t tot_usec) {
       jObj_main = json_object_new_object();
       jObj_trafficStats = json_object_new_object();
       jArray_detProto = json_object_new_array();
+
+       //add 1
+      json_object_object_add(jObj_trafficStats, "traffic.duration", json_object_new_double(global_traffic_duration));
 
       json_object_object_add(jObj_trafficStats,"ethernet.bytes",json_object_new_int64(cumulative_stats.total_wire_bytes));
       json_object_object_add(jObj_trafficStats,"discarded.bytes",json_object_new_int64(cumulative_stats.total_discarded_bytes));
