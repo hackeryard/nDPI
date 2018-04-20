@@ -1894,7 +1894,8 @@ static void printResults(u_int64_t tot_usec) {
     printf("\tActual Memory:           %-13s\n", formatBytes(current_ndpi_memory, buf, sizeof(buf)));
     printf("\tPeak Memory:             %-13s\n", formatBytes(max_ndpi_memory, buf, sizeof(buf)));
 
-    if(!json_flag) {
+    // debug: @@+1 
+    if(!json_flag || 1) {
       printf("\nTraffic statistics:\n");
       printf("\tEthernet bytes:        %-13llu (includes ethernet CRC/IFC/trailer)\n",
 	     (long long unsigned int)cumulative_stats.total_wire_bytes);
