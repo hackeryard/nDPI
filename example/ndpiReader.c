@@ -1825,7 +1825,7 @@ void printPortStats(struct port_stats *stats) {
 }
 
 //add traffic duration
-float global_traffic_duration;
+float global_traffic_duration = 1.1;
 
 /* *********************************************** */
 
@@ -1833,7 +1833,7 @@ float global_traffic_duration;
  * @brief Print result
  */
 static void printResults(u_int64_t tot_usec) {
-  
+
   u_int32_t i;
   u_int64_t total_flow_bytes = 0;
   u_int32_t avg_pkt_size = 0;
@@ -2183,7 +2183,7 @@ static void printResults(u_int64_t tot_usec) {
     deletePortsStats(dstStats);
     dstStats = NULL;
   }
-}
+} // printResults()
 
 /**
  * @brief Force a pcap_dispatch() or pcap_loop() call to return
