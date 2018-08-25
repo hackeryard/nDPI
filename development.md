@@ -13,7 +13,7 @@
 
 ## 开发环境
 
-- 单独测试，也即不使用DPDK的流量，在内网的237服务器上测试：连接内网->修改源代码->在git shell中执行./re.sh，输入密码，上传更新到232服务器->在237服务器上./remake.sh，确认编译没有错误，有错误则重复以前的操作->执行ndpiReader -i test.pcap > debug.txt，从文件读入，并写结果到当前目录下的flowfile；或者执行ndpiReader -i em1 -s 20 > debug.txt，从本地网卡em1读入，持续监听20秒，并写结果到flowfile；或者解注释udp接收的代码，使用udp实时接收来自DPDK的流量并分析（在pvs1机器上）
+- 单独测试，也即不使用DPDK的流量，在内网的237服务器上测试：连接内网->修改源代码->在git shell中执行./re.sh（example/），输入密码，上传更新到232服务器->在237服务器上./remake.sh（/root/ndpi/)，确认编译没有错误，有错误则重复以前的操作->执行ndpiReader -i test.pcap > debug.txt，从文件读入，并写结果到当前目录下的flowfile；或者执行ndpiReader -i em1 -s 20 > debug.txt，从本地网卡em1读入，持续监听20秒，并写结果到flowfile；或者解注释udp接收的代码，使用udp实时接收来自DPDK的流量并分析（在pvs1机器上）
 
 ## 阅读建议
 
@@ -65,7 +65,7 @@
 
 ## flowfile读取和分析
 
-- flow和packets存储的格式已在程序逻辑中给出，读取flowfile的读取程序为read_flow.cpp，已添加每个flow的平均包长和包长的标准差的计算，可以根据需要提取更多的特征
+- flow和packets存储的格式已在程序逻辑中给出，读取flowfile的读取程序为read_flow.cpp(/root/ndpi/)，已添加每个flow的平均包长和包长的标准差的计算，可以根据需要提取更多的特征
 - 标准差的计算使用了c++模板，standard_deviation函数可以接受任意类型的数组作为参数，如len为int，timestamp为float等
 - 根据需要的方式将特征和协议类型组成的训练行输出到文件
 
