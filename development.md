@@ -73,3 +73,8 @@
 
 - [内存泄露](http://scottmcpeak.com/memory-errors/)
 - gdb+coredump调试
+
+## 当前工作
+
+- 在pvs1机器的/home/pvs1/pcap_file上分流all_in_one_file_0_1.pcap等四个文件到flowfile_0_1，这些文件可以通过read_flow程序(/home/pvs1/pcap_file/)读取并分析flow文件
+- 备注：每个all_in_one_file_0_1.pcap大小为2.5G，分流完成需要半个小时
