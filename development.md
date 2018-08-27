@@ -6,14 +6,16 @@
 
 ## 源代码
 
-- 位置：服务器 10.10.7.237: /root/ndpi/nDPI
-- 为了修改测试方便，使用部署在10.10.7.232上的git服务
+- 代码位置：服务器 10.10.7.237: /root/ndpi/nDPI
+- 为了修改测试方便，使用部署在10.10.7.232上的git服务，开发时首先要克隆此仓库，使用命令：
+
+  - git clone git@10.10.7.232:~/repo/nDPI.git
 - ndpiReader.c是官方给的示例程序，在example/下，通过阅读和调试此程序，得到nDPI的逻辑
-- 由于pvs1机器无法访问内网git server，所以需要在237上通过scp把打包的文件上传过来后重新编译，注意不能直接把237机器上编译好的ndpiReader直接scp到pvs1，因为pvs1为ubuntu，与237的centos上的某些依赖库版本不同，并不兼容
+- 由于pvs1机器无法访问内网git server，所以需要在237上通过scp把打包的文件上传过来后重新编译，注意不能直接把237机器上编译好的ndpiReader直接scp到pvs1，因为pvs1为ubuntu，与237的centos上某些依赖库的版本不同，并不兼容
 
 ## 开发环境
 
-- 单独测试，也即不使用DPDK的流量，在内网的237服务器上测试：连接内网->修改源代码->在git shell中执行./re.sh（example/），输入密码，上传更新到232服务器->在237服务器上./remake.sh（/root/ndpi/)，确认编译没有错误，有错误则重复以前的操作->执行ndpiReader -i test.pcap > debug.txt，从文件读入，并写结果到当前目录下的flowfile；或者执行ndpiReader -i em1 -s 20 > debug.txt，从本地网卡em1读入，持续监听20秒，并写结果到flowfile；或者解注释udp接收的代码，使用udp实时接收来自DPDK的流量并分析（在pvs1机器上）
+- 单独测试，也即不使用DPDK的流量，在内网的237服务器上测试：连接内网->克隆此仓库->修改源代码->在git shell中执行./re.sh（example/），输入密码，上传更新到232服务器->在237服务器上./remake.sh（/root/ndpi/)，确认编译没有错误，有错误则重复以前的操作->执行ndpiReader -i test.pcap -F flow_file_name > debug.txt，从文件读入，并写结果到当前目录下的flow_file_name；或者执行ndpiReader -i em1 -s 20 -F flow_file_name> debug.txt，从本地网卡em1读入，持续监听20秒，并写结果到flow_file_name；或者解注释udp接收的代码，使用udp实时接收来自DPDK的流量并分析（在pvs1机器上）
 
 ## 阅读建议
 
@@ -65,7 +67,9 @@
 
 ## flowfile读取和分析
 
-- flow和packets存储的格式已在程序逻辑中给出，读取flowfile的读取程序为read_flow.cpp(/root/ndpi/)，已添加每个flow的平均包长和包长的标准差的计算，可以根据需要提取更多的特征
+- flow和packets存储的格式已在程序逻辑中给出，读取flowfile的读取程序为read_flow.cpp(/root/ndpi/)，已添加每个flow的平均包长和包长的标准差的计算，可以根据需要提取更多的特征。read_flow程序的使用方法如下：
+
+  - ./read_flow flow_file_name (PS: flow_file_name为flow文件名)
 - 标准差的计算使用了c++模板，standard_deviation函数可以接受任意类型的数组作为参数，如len为int，timestamp为float等
 - 根据需要的方式将特征和协议类型组成的训练行输出到文件
 
@@ -77,4 +81,7 @@
 ## 当前工作
 
 - 在pvs1机器的/home/pvs1/pcap_file上分流all_in_one_file_0_1.pcap等四个文件到flowfile_0_1，这些文件可以通过read_flow程序(/home/pvs1/pcap_file/)读取并分析flow文件
-- 备注：每个all_in_one_file_0_1.pcap大小为2.5G，分流完成需要半个小时
+- 备注：每个all_in_one_file_0_1.pcap大小为2.5G，分流完成需要半个小时，为了节省分析每个pcap文件的时间，可以同时执行多个ndpiReader，使得分析完最多32个（等于核心数）2.5G的pcap文件的总时间为半个小时：
+  - nohup ndpiReader -i all_in_one_file_0_1.pcap -F flowfile_0_1 &
+  - nohup ndpiReader -i all_in_one_file_1_1.pcap -F flowfile_1_1 &
+  - ......
